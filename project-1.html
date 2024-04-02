@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  <style>
+    /* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  .container {
+    display: flex;
+  }
+  
+  .sidebar {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .main {
+    flex: 3;
+    padding: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  textarea,
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #preview {
+    margin-top: 20px;
+  }
+  
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Resume Builder</h1>
+  </header>
+  <div class="container">
+    <section class="sidebar">
+      <h2>Resume Templates</h2>
+      <ul id="templateList">
+        <li>Template 1</li>
+        <li>Template 2</li>
+        <li>Template 3</li>
+      </ul>
+    </section>
+    <section class="main">
+      <h2>Build Your Resume</h2>
+      <form id="resumeForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="education">Education:</label>
+        <textarea id="education" name="education" required></textarea><br><br>
+        
+        <label for="experience">Work Experience:</label>
+        <textarea id="experience" name="experience" required></textarea><br><br>
+        
+        <label for="skills">Skills:</label>
+        <textarea id="skills" name="skills" required></textarea><br><br>
+        
+        <button type="button" id="previewButton">Preview</button>
+        <button type="button" id="downloadButton">Download</button>
+      </form>
+      <div id="preview"></div>
+    </section>
+  </div>
+
+  <script>
+    // script.js
+
+document.getElementById("previewButton").addEventListener("click", function() {
+    const form = document.getElementById("resumeForm");
+    const preview = document.getElementById("preview");
+  
+    const name = form.elements["name"].value;
+    const email = form.elements["email"].value;
+    const education = form.elements["education"].value;
+    const experience = form.elements["experience"].value;
+    const skills = form.elements["skills"].value;
+  
+    const previewContent = `
+      <h3>Preview</h3>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Education:</strong><br>${education}</p>
+      <p><strong>Work Experience:</strong><br>${experience}</p>
+      <p><strong>Skills:</strong><br>${skills}</p>
+    `;
+  
+    preview.innerHTML = previewContent;
+  });
+  
+  document.getElementById("downloadButton").addEventListener("click", function() {
+    const form = document.getElementById("resumeForm");
+    const data = new FormData(form);
+    const blob = new Blob([formatData(data)], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "resume.txt";
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+  
+  function formatData(data) {
+    let formattedData = "";
+    for (const [key, value] of data.entries()) {
+      formattedData += `${key}: ${value}\n`;
+    }
+    return formattedData;
+  }
+  
+  </script>
+</body>
+</html>
